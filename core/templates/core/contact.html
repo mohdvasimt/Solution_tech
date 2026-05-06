@@ -1,0 +1,161 @@
+{% extends 'core/base.html' %}
+{% load custom_filters %}
+{% block title %}Contact Us — Solution_Tech.AI{% endblock %}
+{% block extra_head %}
+<style>
+.contact-page-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;align-items:start;padding:4rem 0 0}
+.cinfo h3{font-family:var(--font-head);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:1rem}
+.cinfo p{color:var(--muted);line-height:1.85;margin-bottom:2rem;font-size:.97rem}
+.cm-list{display:flex;flex-direction:column;gap:1rem}
+.cm-link{display:flex;align-items:center;gap:1rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.4rem;transition:all .28s;text-decoration:none}
+.cm-link:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(0,0,0,.3),0 0 28px rgba(0,212,255,.1);transform:translateX(5px)}
+.cmi{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.cmi.wa{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.2)}
+.cmi.call{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)}
+.cmi.mail{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)}
+.cmi.loc{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2)}
+.cm-label{font-size:.72rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.8px}
+.cm-value{font-size:.92rem;font-weight:600}
+.cform{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.75rem;position:relative;overflow:hidden}
+.cform::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2))}
+.cform h4{font-family:var(--font-head);font-size:1.3rem;font-weight:700;margin-bottom:1.75rem}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+.fg label{font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.3px}
+.fg input,.fg textarea,.fg select{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.78rem 1rem;color:var(--text);font-family:var(--font-body);font-size:.9rem;transition:all .25s;resize:none;outline:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+.fg select option{background:var(--surface2)}
+.form-sub{width:100%;padding:1rem;border-radius:12px;background:linear-gradient(135deg,var(--accent),rgba(0,212,255,.75));color:#000;font-weight:700;font-size:1rem;transition:transform .25s,box-shadow .25s;display:flex;align-items:center;justify-content:center;gap:.55rem;border:none}
+.form-sub:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,212,255,.4)}
+.form-note{font-size:.76rem;color:var(--muted);margin-top:.65rem;text-align:center}
+.form-errors{color:#ff9a9a;font-size:.8rem;margin-top:.25rem}
+.faq-section{margin-top:5rem}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem;cursor:pointer;font-weight:600;font-size:.92rem;transition:background .2s}
+.faq-q:hover{background:rgba(0,212,255,.04)}
+.faq-arrow{transition:transform .3s;color:var(--accent);font-size:.9rem}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-a p{padding:0 1.4rem 1.2rem;font-size:.87rem;color:var(--muted);line-height:1.8}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-item.open .faq-a{max-height:200px}
+@media(max-width:1024px){.contact-page-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.form-row2{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="section-eyebrow" style="margin:0 auto 1rem">📬 Let's Talk</div>
+  <h1>Get In Touch With<br/><em style="font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Solution_Tech.AI</em></h1>
+  <p>We're available 6 days a week. Most projects start within 48 hours of your first message. Drop us a line — we'd love to hear about your project.</p>
+</div>
+
+<section>
+  <div class="contact-page-grid">
+    <div class="cinfo reveal-left">
+      <h3>Let's Build<br/>Something Great</h3>
+      <p>Whether you need a WhatsApp bot, a custom website, or a full mobile app — we deliver results. Start with a free consultation.</p>
+      <div class="cm-list">
+        <a href="https://wa.me/919876543210?text=Hi%20Solution_Tech.AI!%20I%27d%20like%20to%20discuss%20a%20project." class="cm-link" target="_blank" rel="noopener">
+          <div class="cmi wa">💬</div>
+          <div><div class="cm-label">WhatsApp (Fastest)</div><div class="cm-value">+91 98765 43210</div></div>
+          <span style="margin-left:auto;background:rgba(0,255,136,.1);color:var(--accent3);font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:99px;border:1px solid rgba(0,255,136,.2)">● Online</span>
+        </a>
+        <a href="tel:+919876543210" class="cm-link">
+          <div class="cmi call">📞</div>
+          <div><div class="cm-label">Direct Call</div><div class="cm-value">+91 98765 43210</div></div>
+        </a>
+        <a href="mailto:hello@solutiontech.ai" class="cm-link">
+          <div class="cmi mail">📧</div>
+          <div><div class="cm-label">Email</div><div class="cm-value">hello@solutiontech.ai</div></div>
+        </a>
+        <div class="cm-link" style="cursor:default">
+          <div class="cmi loc">📍</div>
+          <div><div class="cm-label">Location</div><div class="cm-value">Meerut, Uttar Pradesh, India</div></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:1rem;font-family:var(--font-head)">⏰ Working Hours</div>
+        {% for row in "Monday – Friday,9:00 AM – 8:00 PM IST|Saturday,10:00 AM – 6:00 PM IST|Sunday,Emergency support only"|split:"|" %}
+        {% with parts=row|split:"," %}
+        <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.4rem 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted)">{{ parts.0 }}</span>
+          <span style="font-weight:600;color:var(--accent3)">{{ parts.1 }}</span>
+        </div>
+        {% endwith %}{% endfor %}
+      </div>
+    </div>
+
+    <div class="cform reveal-right">
+      <h4>📩 Send Us a Message</h4>
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="form-row2">
+          <div class="fg">
+            <label>First Name *</label>{{ form.first_name }}
+            {% if form.first_name.errors %}<div class="form-errors">{{ form.first_name.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="fg">
+            <label>Last Name *</label>{{ form.last_name }}
+            {% if form.last_name.errors %}<div class="form-errors">{{ form.last_name.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+        <div class="form-row2">
+          <div class="fg">
+            <label>Email Address *</label>{{ form.email }}
+            {% if form.email.errors %}<div class="form-errors">{{ form.email.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="fg">
+            <label>Phone / WhatsApp</label>{{ form.phone }}
+          </div>
+        </div>
+        <div class="fg">
+          <label>Service You're Interested In</label>{{ form.service }}
+        </div>
+        <div class="fg">
+          <label>Tell Us About Your Project *</label>
+          {{ form.message }}
+          {% if form.message.errors %}<div class="form-errors">{{ form.message.errors.0 }}</div>{% endif %}
+        </div>
+        <button type="submit" class="form-sub">🚀 Send Message to Solution_Tech.AI</button>
+        <p class="form-note">🔒 Your data is private. We typically reply within 2–4 hours.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section reveal">
+    <div class="section-header center">
+      <div class="section-eyebrow">❓ FAQ</div>
+      <h2 class="section-title">Frequently Asked <span class="grad">Questions</span></h2>
+    </div>
+    <div class="faq-grid" id="faqGrid">
+      {% for qa in "How long does a WhatsApp bot take to build?,Most WhatsApp bots are ready within 3–7 business days. Complex multi-flow bots with CRM integration may take 10–14 days.|Do you offer revisions?,Yes — all projects include 2 rounds of revisions. We work until you're 100% satisfied.|Can I get a free demo of the WA bot?,Absolutely! Contact us on WhatsApp and we'll set up a live bot demo for your specific use case.|What tech stack do you use?,We use Python/Node.js for backends, React/Next.js for web, React Native/Flutter for mobile, and the official WhatsApp Business API.|Do you provide hosting and maintenance?,Yes. We offer monthly maintenance plans starting at ₹999/month including hosting, updates, and priority support.|Can you integrate with my existing CRM or ERP?,Yes — we integrate with Zoho, HubSpot, Salesforce, Tally, and custom APIs. Let us know your stack."|split:"|" %}
+      {% with parts=qa|split:"," %}
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>{{ parts.0 }}</span>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a"><p>{{ parts.1 }}</p></div>
+      </div>
+      {% endwith %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFaq(el){
+  const item=el.parentElement;
+  document.querySelectorAll('.faq-item').forEach(i=>{if(i!==item)i.classList.remove('open')});
+  item.classList.toggle('open');
+}
+// Pre-select service from URL query
+const params=new URLSearchParams(location.search);
+const svc=params.get('service');
+if(svc){const s=document.querySelector('[name=service]');if(s)s.value=svc;}
+</script>
+{% endblock %}

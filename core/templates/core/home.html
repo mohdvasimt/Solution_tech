@@ -1,0 +1,843 @@
+{% extends 'core/base.html' %}
+{% load custom_filters %}
+{% block title %}Solution_Tech.AI — Automation, Bots & Digital Solutions{% endblock %}
+{% block extra_head %}
+<style>
+/* ─── HERO ───────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:calc(var(--nav-h)+5rem) 5vw 5rem;
+  position:relative;overflow:hidden
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 70% at 75% 40%,rgba(0,212,255,.07) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 50% at 15% 75%,rgba(0,255,136,.05) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 10%,rgba(124,58,237,.06) 0%,transparent 60%)
+}
+/* Animated grid */
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,212,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,.035) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 10%,transparent 75%);
+  animation:gridPulse 8s ease-in-out infinite
+}
+@keyframes gridPulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* Floating orbs */
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.orb1{width:400px;height:400px;right:-100px;top:10%;background:rgba(0,212,255,.08);animation:orbFloat1 12s ease-in-out infinite}
+.orb2{width:300px;height:300px;left:5%;bottom:10%;background:rgba(0,255,136,.07);animation:orbFloat2 15s ease-in-out infinite}
+.orb3{width:250px;height:250px;right:20%;bottom:20%;background:rgba(124,58,237,.07);animation:orbFloat3 10s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(-30px,20px)}66%{transform:translate(20px,-30px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,-25px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(0,0)}40%{transform:translate(-20px,30px)}80%{transform:translate(30px,-10px)}}
+
+.hero-content{max-width:680px;position:relative;z-index:2}
+
+/* Status badge */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);
+  color:var(--accent3);padding:.4rem 1rem;border-radius:99px;
+  font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:2rem;animation:fadeUp .6s ease both
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent3);animation:badgePulse 1.8s ease infinite}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.6)}70%{box-shadow:0 0 0 8px rgba(0,255,136,0)}}
+
+/* Heading */
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(2.8rem,5.5vw,5rem);
+  font-weight:800;line-height:1.04;letter-spacing:-2.5px;
+  margin-bottom:1.75rem;animation:fadeUp .7s .1s ease both
+}
+.hero h1 .line1{display:block}
+.hero h1 .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent3) 50%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(0,212,255,.3))
+}
+/* Typing cursor */
+.hero h1 .cursor{
+  display:inline-block;width:3px;height:.85em;background:var(--accent);
+  margin-left:4px;border-radius:2px;animation:blink .9s step-end infinite;vertical-align:-.05em
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.hero-desc{
+  font-size:1.1rem;color:var(--muted);max-width:500px;
+  margin-bottom:2.75rem;font-weight:300;line-height:1.9;
+  animation:fadeUp .7s .2s ease both
+}
+
+/* CTA group */
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem;animation:fadeUp .7s .3s ease both}
+.btn-wa{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:linear-gradient(135deg,#25d366,#128c3e);
+  color:#fff;font-weight:700;font-size:.9rem;
+  padding:.85rem 1.75rem;border-radius:99px;
+  transition:transform .25s,box-shadow .25s;border:none;
+  box-shadow:0 0 0 rgba(37,211,102,0)
+}
+.btn-wa:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(37,211,102,.4)}
+
+/* Stats */
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;animation:fadeUp .7s .45s ease both}
+.stat-item{position:relative;padding-left:1.1rem}
+.stat-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent3));border-radius:2px}
+.stat-num{font-family:var(--font-brand);font-size:2rem;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-1px}
+.stat-lbl{font-size:.73rem;color:var(--muted);margin-top:.2rem;text-transform:uppercase;letter-spacing:1px}
+
+/* Hero visual / float cards */
+.hero-visual{
+  position:absolute;right:4vw;top:50%;transform:translateY(-50%);
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;z-index:2;
+  animation:heroVisualIn .9s .5s ease both
+}
+@keyframes heroVisualIn{from{opacity:0;transform:translateY(-50%) translateX(60px)}to{opacity:1;transform:translateY(-50%)}}
+.float-card{
+  background:rgba(13,20,37,.9);border:1px solid var(--border);
+  border-radius:14px;padding:1.3rem 1.1rem;
+  backdrop-filter:blur(12px);transition:all .35s;
+  animation:cardFloat 5s ease-in-out infinite
+}
+.float-card:nth-child(2){animation-delay:.7s}
+.float-card:nth-child(3){animation-delay:1.2s}
+.float-card:nth-child(4){animation-delay:1.8s}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.float-card:hover{border-color:rgba(0,212,255,.35);box-shadow:0 16px 40px rgba(0,0,0,.4),0 0 30px rgba(0,212,255,.1);transform:translateY(-8px)!important}
+.fc-icon{font-size:1.7rem;margin-bottom:.6rem}
+.fc-title{font-weight:700;font-size:.82rem;font-family:var(--font-head);color:var(--text)}
+.fc-sub{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+.fc-bar{height:3px;border-radius:3px;margin-top:.75rem;background:linear-gradient(90deg,var(--accent),var(--accent3));animation:barPulse 2s ease-in-out infinite}
+@keyframes barPulse{0%,100%{opacity:.5;width:40%}50%{opacity:1;width:100%}}
+
+/* ─── SERVICES ───────────────────────────────────────── */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem}
+.svc-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2rem;
+  position:relative;overflow:hidden;transition:all .35s;cursor:default
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 90% 70% at 50% 0%,var(--cg,rgba(0,212,255,.08)),transparent);
+  opacity:0;transition:opacity .35s
+}
+.svc-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cl,var(--accent)),transparent);
+  opacity:0;transition:opacity .35s
+}
+.svc-card:hover{transform:translateY(-7px);border-color:rgba(0,212,255,.28);box-shadow:0 28px 56px rgba(0,0,0,.5)}
+.svc-card:hover::before,.svc-card:hover::after{opacity:1}
+.svc-card.g{--cg:rgba(0,255,136,.08);--cl:var(--accent3)}
+.svc-card.p{--cg:rgba(124,58,237,.08);--cl:#a78bfa}
+.svc-card.o{--cg:rgba(255,107,53,.07);--cl:var(--accent4)}
+.svc-card.wide{grid-column:1/-1}
+.svc-icon-wrap{
+  width:54px;height:54px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  margin-bottom:1.5rem;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.15);
+  position:relative;overflow:hidden
+}
+.svc-icon-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent)}
+.svc-card.g .svc-icon-wrap{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.15)}
+.svc-card.p .svc-icon-wrap{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.15)}
+.svc-card.o .svc-icon-wrap{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.15)}
+.svc-eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.15);display:inline-block;padding:.2rem .7rem;border-radius:99px;margin-bottom:.8rem}
+.svc-card.g .svc-eyebrow{color:var(--accent3);background:rgba(0,255,136,.07);border-color:rgba(0,255,136,.15)}
+.svc-card.p .svc-eyebrow{color:#a78bfa;background:rgba(124,58,237,.07);border-color:rgba(124,58,237,.15)}
+.svc-card.o .svc-eyebrow{color:var(--accent4);background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.15)}
+.svc-title{font-family:var(--font-head);font-size:1.15rem;font-weight:700;margin-bottom:.65rem}
+.svc-desc{font-size:.9rem;color:var(--muted);line-height:1.8}
+.svc-list{margin-top:1.25rem;display:flex;flex-direction:column;gap:.4rem}
+.svc-list li{font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+.svc-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.svc-card.g .svc-list li::before{background:var(--accent3)}
+.svc-card.p .svc-list li::before{background:#a78bfa}
+.svc-card.o .svc-list li::before{background:var(--accent4)}
+
+/* WA demo inside service card */
+.wa-demo-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;padding:1rem;max-width:340px
+}
+.wa-dm-bubble{border-radius:12px 12px 12px 2px;padding:.65rem 1rem;font-size:.82rem;line-height:1.6;margin-bottom:.4rem;display:inline-block}
+.wa-dm-in{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.12);color:#b3f0cc}
+.wa-dm-out{display:block;text-align:right;margin-left:auto;border-radius:12px 12px 2px 12px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.12)}
+.wa-dm-qr{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.wa-dm-btn{font-size:.74rem;font-weight:600;background:none;border:1px solid rgba(37,211,102,.25);color:#25d366;border-radius:99px;padding:.25rem .7rem;cursor:pointer;transition:background .2s}
+.wa-dm-btn:hover{background:rgba(37,211,102,.1)}
+
+/* ─── PORTFOLIO ──────────────────────────────────────── */
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.proj-card{
+  border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--border);background:var(--surface2);
+  transition:all .35s;cursor:pointer;position:relative
+}
+.proj-card:hover{transform:translateY(-7px);box-shadow:var(--shadow-deep);border-color:rgba(0,212,255,.25)}
+.proj-card.feat{grid-column:span 2;grid-row:span 2}
+.proj-thumb{
+  width:100%;aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;position:relative;overflow:hidden
+}
+.proj-card.feat .proj-thumb{aspect-ratio:auto;min-height:270px}
+.proj-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.85)100%)}
+.proj-info{padding:1.3rem}
+.proj-tag{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.proj-title{font-family:var(--font-head);font-weight:700;font-size:1rem;margin-bottom:.4rem}
+.proj-desc{font-size:.83rem;color:var(--muted);line-height:1.7}
+.proj-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
+
+/* ─── TEMPLATES PREVIEW ──────────────────────────────── */
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1.5rem}
+.tmpl-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:all .35s
+}
+.tmpl-card:hover{transform:translateY(-7px);box-shadow:var(--shadow-deep);border-color:rgba(0,212,255,.28)}
+.tmpl-thumb{
+  height:155px;display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;position:relative;overflow:hidden
+}
+.tmpl-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.6)100%)}
+.tmpl-badge-pos{position:absolute;top:.7rem;right:.7rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:.2rem .65rem;border-radius:99px;background:rgba(0,212,255,.15);color:var(--accent);border:1px solid rgba(0,212,255,.25);z-index:1}
+.tmpl-body{padding:1.3rem}
+.tmpl-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:.4rem}
+.tmpl-name{font-family:var(--font-head);font-weight:700;font-size:.97rem;margin-bottom:.4rem}
+.tmpl-desc{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:.85rem}
+.tmpl-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+.tmpl-footer{display:flex;justify-content:space-between;align-items:center;padding-top:.85rem;border-top:1px solid var(--border)}
+.tmpl-price{font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--accent3)}
+.tmpl-price small{font-size:.72rem;font-weight:400;color:var(--muted)}
+
+/* ─── ABOUT ──────────────────────────────────────────── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:2.5rem;position:relative;overflow:hidden
+}
+.about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2))}
+.skill-row{margin-bottom:1rem}
+.skill-top{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem}
+.skill-name{font-weight:600}
+.skill-pct{color:var(--accent);font-weight:700}
+.skill-track{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.skill-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));animation:skillGrow 1.5s ease both}
+@keyframes skillGrow{from{width:0!important}}
+
+/* ─── TESTIMONIALS ───────────────────────────────────── */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.testi-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2rem;transition:all .35s
+}
+.testi-card:hover{transform:translateY(-5px);border-color:rgba(0,212,255,.2);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.stars{color:#f59e0b;letter-spacing:2px;margin-bottom:.75rem;font-size:.88rem}
+.testi-quote{font-size:2.2rem;color:var(--accent);font-family:serif;line-height:1;opacity:.6}
+.testi-text{font-size:.9rem;color:var(--muted);line-height:1.8;margin:0.5rem 0 1.25rem;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.tav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;font-family:var(--font-head);flex-shrink:0}
+.tan{font-weight:700;font-size:.88rem}
+.tar{font-size:.77rem;color:var(--muted)}
+
+/* ─── CONTACT ────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:4rem;align-items:start}
+.cm-list{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem}
+.cm-link{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:1rem 1.25rem;transition:all .28s;text-decoration:none
+}
+.cm-link:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 30px rgba(0,212,255,.1);transform:translateX(4px)}
+.cm-icon-wrap{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cm-wa{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.2)}
+.cm-call{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)}
+.cm-mail{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)}
+.cm-label{font-size:.72rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.8px}
+.cm-value{font-size:.9rem;font-weight:600}
+/* Form */
+.cform{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;position:relative;overflow:hidden}
+.cform::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2))}
+.cform h4{font-family:var(--font-head);font-size:1.2rem;font-weight:700;margin-bottom:1.75rem}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+.fg label{font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.3px}
+.fg input,.fg textarea,.fg select{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:.75rem 1rem;color:var(--text);
+  font-family:var(--font-body);font-size:.9rem;
+  transition:border-color .25s,box-shadow .25s;resize:none;outline:none
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+.fg select option{background:var(--surface2)}
+.form-sub{
+  width:100%;padding:1rem;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),rgba(0,212,255,.75));
+  color:#000;font-weight:700;font-size:.95rem;
+  transition:transform .25s,box-shadow .25s;
+  display:flex;align-items:center;justify-content:center;gap:.55rem;border:none
+}
+.form-sub:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,212,255,.4)}
+.form-note{font-size:.76rem;color:var(--muted);margin-top:.65rem;text-align:center}
+.form-errors{color:#ff9a9a;font-size:.8rem;margin-top:.25rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+@media(max-width:1200px){.hero-visual{display:none}}
+@media(max-width:1024px){
+  .about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .port-grid{grid-template-columns:1fr 1fr}
+  .proj-card.feat{grid-column:span 2}
+}
+@media(max-width:768px){
+  .hero{padding-bottom:3rem}
+  .hero-stats{gap:1.5rem}
+  .stat-num{font-size:1.65rem}
+  .port-grid{grid-template-columns:1fr}
+  .proj-card.feat{grid-column:1;grid-row:auto}
+  .form-row2{grid-template-columns:1fr}
+  .svc-card.wide{grid-column:1}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Accepting New Projects — 2025
+    </div>
+
+    <h1>
+      <span class="line1">Build Smarter.</span>
+      <span class="line2" id="typedLine">Automate Everything.</span>
+      <span class="cursor"></span>
+    </h1>
+
+    <p class="hero-desc">
+      Solution_Tech.AI delivers enterprise-grade automation systems, intelligent bots, pixel-perfect websites, and production-ready mobile apps — engineered to scale your business on autopilot.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="https://wa.me/919876543210?text=Hi%20Solution_Tech.AI!%20I'm%20interested%20in%20your%20services." class="btn-wa" target="_blank" rel="noopener">
+        💬 Chat on WhatsApp
+      </a>
+      <a href="#services" class="btn-outline">Explore Services ↓</a>
+      <a href="tel:+919876543210" class="btn-ghost">📞 Call Now</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-count="120">0</div>
+        <div class="stat-lbl">Projects Delivered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="50">0</div>
+        <div class="stat-lbl">Bots Deployed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="98">0</div>
+        <div class="stat-lbl">% Satisfaction</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="6">0</div>
+        <div class="stat-lbl">Years Experience</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating cards -->
+  <div class="hero-visual">
+    <div class="float-card"><div class="fc-icon">⚡</div><div class="fc-title">Automation</div><div class="fc-sub">Save 40 hrs/week</div><div class="fc-bar"></div></div>
+    <div class="float-card"><div class="fc-icon">🤖</div><div class="fc-title">WA Bot</div><div class="fc-sub">24/7 Auto-Reply</div><div class="fc-bar"></div></div>
+    <div class="float-card"><div class="fc-icon">🌐</div><div class="fc-title">Web Templates</div><div class="fc-sub">Launch in 48hrs</div><div class="fc-bar"></div></div>
+    <div class="float-card"><div class="fc-icon">📱</div><div class="fc-title">Mobile Apps</div><div class="fc-sub">iOS & Android</div><div class="fc-bar"></div></div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══════════════════════════ -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    {% for item in "Automation Solutions,WhatsApp Bots,Website Templates,Mobile Apps,API Integration,Business Automation,AI Chatbots,E-Commerce,Data Analytics,CRM Automation,App Development,Cloud Deployment,Automation Solutions,WhatsApp Bots,Website Templates,Mobile Apps,API Integration,Business Automation,AI Chatbots,E-Commerce,Data Analytics,CRM Automation,App Development,Cloud Deployment"|split:"," %}
+    <div class="mq-item"><span class="mq-dot"></span>{{ item }}</div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════ -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">⚙️ What We Do</div>
+    <h2 class="section-title">Powerful Services for<br/><span class="grad">Modern Businesses</span></h2>
+    <p class="section-sub">From intelligent automation to full-scale apps — solutions engineered to work while you sleep.</p>
+  </div>
+
+  <div class="svc-grid">
+    <!-- Automation -->
+    <div class="svc-card reveal">
+      <div class="svc-icon-wrap">⚡</div>
+      <div class="svc-eyebrow">Automation</div>
+      <h3 class="svc-title">Business Automation Solutions</h3>
+      <p class="svc-desc">Eliminate repetitive tasks and streamline workflows with smart automation that gives your team back 40+ hours per week.</p>
+      <ul class="svc-list">
+        <li>Workflow & process automation</li>
+        <li>Data scraping & reporting</li>
+        <li>Email & CRM automation</li>
+        <li>Zapier / Make.com integration</li>
+        <li>Scheduled task runners</li>
+      </ul>
+    </div>
+
+    <!-- WhatsApp Bot - WIDE FEATURED -->
+    <div class="svc-card g wide reveal">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;flex-wrap:wrap">
+        <div>
+          <div class="svc-icon-wrap" style="background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.2)">💬</div>
+          <div class="svc-eyebrow" style="color:#25d366;background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.2)">WhatsApp Bot</div>
+          <h3 class="svc-title">Custom Bot Development &amp; WhatsApp Integration</h3>
+          <p class="svc-desc">Deploy intelligent, always-on bots that handle customer inquiries, send automated greetings, qualify leads, and book appointments — 24/7 via WhatsApp.</p>
+          <ul class="svc-list" style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem 2rem">
+            <li>Auto-greeting on first message</li>
+            <li>FAQ auto-response engine</li>
+            <li>Lead qualification flow</li>
+            <li>Appointment scheduling</li>
+            <li>Broadcast messaging</li>
+            <li>Multi-agent handoff</li>
+          </ul>
+          <div style="margin-top:1.5rem">
+            <a href="{% url 'contact' %}" class="btn-primary" style="font-size:.84rem;padding:.65rem 1.4rem">Get Your WA Bot →</a>
+          </div>
+        </div>
+        <!-- Live demo preview -->
+        <div class="wa-demo-card">
+          <div class="wa-dm-bubble wa-dm-in">👋 Hi! Welcome to Solution_Tech.AI. How can I help you?</div>
+          <div class="wa-dm-bubble wa-dm-out">I need a WhatsApp bot for my business</div>
+          <div class="wa-dm-bubble wa-dm-in">Great! 🚀 We build custom bots that work 24/7. Want a free demo?</div>
+          <div class="wa-dm-qr">
+            <button class="wa-dm-btn">See Demo</button>
+            <button class="wa-dm-btn">Get Quote</button>
+            <button class="wa-dm-btn">Talk to Human</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Web Templates -->
+    <div class="svc-card p reveal">
+      <div class="svc-icon-wrap">🌐</div>
+      <div class="svc-eyebrow">Web Templates</div>
+      <h3 class="svc-title">Ready-to-Use Website Templates</h3>
+      <p class="svc-desc">Professional, mobile-first website templates you can launch in 48 hours — fully customizable to match your brand perfectly.</p>
+      <ul class="svc-list">
+        <li>100+ industry-specific designs</li>
+        <li>Fast-loading &amp; SEO optimized</li>
+        <li>Custom domain &amp; hosting setup</li>
+        <li>WhatsApp button integration</li>
+      </ul>
+      <div style="margin-top:1.25rem">
+        <a href="{% url 'web_templates' %}" class="btn-ghost">Browse Templates →</a>
+      </div>
+    </div>
+
+    <!-- Mobile Apps -->
+    <div class="svc-card o reveal">
+      <div class="svc-icon-wrap">📱</div>
+      <div class="svc-eyebrow">Mobile Apps</div>
+      <h3 class="svc-title">Mobile App Development &amp; Templates</h3>
+      <p class="svc-desc">Pre-built app templates to fully custom iOS &amp; Android apps — launch your mobile product faster without sacrificing quality.</p>
+      <ul class="svc-list">
+        <li>React Native &amp; Flutter apps</li>
+        <li>Pre-built app templates</li>
+        <li>App Store submission support</li>
+        <li>Push notifications &amp; analytics</li>
+      </ul>
+      <div style="margin-top:1.25rem">
+        <a href="{% url 'mobile_templates' %}" class="btn-ghost">Browse App Templates →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     WEB TEMPLATES PREVIEW
+═══════════════════════════════════════ -->
+<section id="web-templates" style="background:var(--surface)">
+  <div class="section-header reveal center">
+    <div class="section-eyebrow">🌐 Web Templates</div>
+    <h2 class="section-title">Website Templates<br/><span class="grad">Ready to Launch</span></h2>
+    <p class="section-sub">Pick a template, customise your brand, and go live in 48 hours.</p>
+  </div>
+  <div class="tmpl-grid">
+    {% for t in featured_web %}
+    <div class="tmpl-card reveal">
+      <div class="tmpl-thumb" style="background:{{ t.gradient }}">
+        <span style="position:relative;z-index:1">{{ t.emoji }}</span>
+        <div class="tmpl-thumb-overlay"></div>
+        <span class="tmpl-badge-pos">{{ t.category }}</span>
+      </div>
+      <div class="tmpl-body">
+        <div class="tmpl-cat">{{ t.category }}</div>
+        <div class="tmpl-name">{{ t.name }}</div>
+        <div class="tmpl-desc">{{ t.description }}</div>
+        <div class="tmpl-tags">{% for tag in t.tags %}<span class="chip">{{ tag }}</span>{% endfor %}</div>
+        <div class="tmpl-footer">
+          <div class="tmpl-price">₹{{ t.price }}<small> / one-time</small></div>
+          <a href="{% url 'contact' %}?service=website" class="btn-primary" style="font-size:.76rem;padding:.42rem 1rem">Get This →</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="text-align:center;margin-top:3rem">
+    <a href="{% url 'web_templates' %}" class="btn-outline">View All Web Templates ({{ web_templates|length }}+) →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MOBILE TEMPLATES PREVIEW
+═══════════════════════════════════════ -->
+<section id="mobile-templates">
+  <div class="section-header reveal center">
+    <div class="section-eyebrow">📱 Mobile App Templates</div>
+    <h2 class="section-title">App Templates That<br/><span class="grad">Ship Faster</span></h2>
+    <p class="section-sub">Production-ready React Native &amp; Flutter templates for every industry.</p>
+  </div>
+  <div class="tmpl-grid">
+    {% for t in featured_mobile %}
+    <div class="tmpl-card reveal">
+      <div class="tmpl-thumb" style="background:{{ t.gradient }}">
+        <span style="position:relative;z-index:1">{{ t.emoji }}</span>
+        <div class="tmpl-thumb-overlay"></div>
+        <span class="tmpl-badge-pos">{{ t.platform }}</span>
+      </div>
+      <div class="tmpl-body">
+        <div class="tmpl-cat">{{ t.category }}</div>
+        <div class="tmpl-name">{{ t.name }}</div>
+        <div class="tmpl-desc">{{ t.description }}</div>
+        <div class="tmpl-tags"><span class="chip">{{ t.tech }}</span></div>
+        <div class="tmpl-footer">
+          <div class="tmpl-price">₹{{ t.price }}<small> / one-time</small></div>
+          <a href="{% url 'contact' %}?service=mobile_app" class="btn-primary" style="font-size:.76rem;padding:.42rem 1rem">Get This →</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="text-align:center;margin-top:3rem">
+    <a href="{% url 'mobile_templates' %}" class="btn-outline">View All App Templates ({{ mobile_templates|length }}+) →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PORTFOLIO
+═══════════════════════════════════════ -->
+<section id="portfolio" style="background:var(--surface)">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">🚀 Our Work</div>
+    <h2 class="section-title">Projects That Deliver<br/><span class="grad">Real Results</span></h2>
+    <p class="section-sub">Automation systems, bots and digital products built for clients across industries.</p>
+  </div>
+  <div class="port-grid">
+    <div class="proj-card feat reveal">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#071a10,#0a3020,#04100a)">
+        <span style="position:relative;z-index:1;font-size:4.5rem">🤖</span>
+        <div class="proj-thumb-overlay"></div>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">WhatsApp Automation</div>
+        <div class="proj-title">E-Commerce Order Bot — RetailHub</div>
+        <div class="proj-desc">End-to-end WA bot handling 2,000+ daily inquiries, payment confirmations and delivery tracking — reducing support staff by 60%.</div>
+        <div class="proj-chips"><span class="chip chip-accent">WhatsApp API</span><span class="chip">Node.js</span><span class="chip">MongoDB</span><span class="chip">Webhooks</span></div>
+      </div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#06101f,#0a1a38,#040c18)">
+        <span style="position:relative;z-index:1;font-size:2.5rem">⚡</span>
+        <div class="proj-thumb-overlay"></div>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Automation</div>
+        <div class="proj-title">HR Workflow Automation — TechCorp</div>
+        <div class="proj-desc">Automated onboarding &amp; payslip generation saving 35 hrs/week.</div>
+        <div class="proj-chips"><span class="chip">Python</span><span class="chip">Zapier</span><span class="chip chip-green">Django</span></div>
+      </div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#100820,#1e1040,#08041a)">
+        <span style="position:relative;z-index:1;font-size:2.5rem">🌐</span>
+        <div class="proj-thumb-overlay"></div>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Web Development</div>
+        <div class="proj-title">Real Estate Template Suite</div>
+        <div class="proj-desc">10 premium real estate templates with WA lead capture.</div>
+        <div class="proj-chips"><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip chip-purple">Maps API</span></div>
+      </div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#1a0806,#321008,#0c0402)">
+        <span style="position:relative;z-index:1;font-size:2.5rem">📱</span>
+        <div class="proj-thumb-overlay"></div>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Mobile App</div>
+        <div class="proj-title">Food Delivery App — QuickBite</div>
+        <div class="proj-desc">Full-stack delivery app with real-time tracking and Stripe payments.</div>
+        <div class="proj-chips"><span class="chip">React Native</span><span class="chip chip-accent">Firebase</span></div>
+      </div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#051812,#082818,#020c08)">
+        <span style="position:relative;z-index:1;font-size:2.5rem">📊</span>
+        <div class="proj-thumb-overlay"></div>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Dashboard</div>
+        <div class="proj-title">Analytics Dashboard — DataSync</div>
+        <div class="proj-desc">Real-time business analytics with automated PDF report scheduling.</div>
+        <div class="proj-chips"><span class="chip">React</span><span class="chip chip-green">Django</span><span class="chip">AWS</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal-left">
+      <div class="about-card">
+        <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin-bottom:1.25rem">👨‍💻</div>
+        <div style="font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin-bottom:.3rem">Solution_Tech.AI</div>
+        <div style="font-size:.83rem;color:var(--accent);margin-bottom:1rem;font-weight:500">Founder — Full-Stack & Automation Engineer</div>
+        <div style="font-size:.87rem;color:var(--muted);line-height:1.8;margin-bottom:1.75rem">6+ years building automation systems, intelligent bots, and production-grade web &amp; mobile applications for businesses across India and globally.</div>
+        {% for s in "Automation & Bots,96|Web Development,94|Mobile Apps (RN),88|API & Integrations,92"|split:"|" %}
+        {% with parts=s|split:"," %}
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">{{ parts.0 }}</span><span class="skill-pct">{{ parts.1 }}%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:{{ parts.1 }}%"></div></div>
+        </div>
+        {% endwith %}{% endfor %}
+        <div style="display:flex;gap:1rem;margin-top:1.5rem">
+          <a href="{% url 'contact' %}" class="btn-primary" style="font-size:.82rem;padding:.6rem 1.3rem">Hire Us →</a>
+          <a href="{% url 'home' %}#portfolio" class="btn-outline" style="font-size:.82rem;padding:.6rem 1.3rem">View Work</a>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="section-eyebrow" style="margin-bottom:1rem">🏢 About Solution_Tech.AI</div>
+      <h2 class="section-title">We Build Tech That<br/><span class="grad">Works Tirelessly</span></h2>
+      <p style="color:var(--muted);line-height:1.85;margin-bottom:1.25rem;font-size:.97rem">Solution_Tech.AI was founded on one belief: every business — from solo founder to enterprise — deserves intelligent automation without enterprise pricing.</p>
+      <p style="color:var(--muted);line-height:1.85;margin-bottom:2rem;font-size:.97rem">We translate complex technical problems into elegant, reliable solutions that drive measurable growth — whether that's a WhatsApp bot handling thousands of inquiries, or a mobile app shipped in weeks.</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        {% for item in "WhatsApp Business API & Meta Cloud API,Python automation — Selenium / Playwright / n8n,React / Next.js / Node.js full-stack,React Native & Flutter mobile apps,Zapier · Make.com · custom Webhook flows,AWS · Vercel · Firebase cloud deployments"|split:"," %}
+        <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem">
+          <span style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));flex-shrink:0;box-shadow:0 0 8px rgba(0,212,255,.4)"></span>
+          {{ item }}
+        </div>
+        {% endfor %}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">
+          <div style="font-family:var(--font-brand);font-size:1.8rem;font-weight:700;color:var(--accent)">120+</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:.25rem">Projects Delivered</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">
+          <div style="font-family:var(--font-brand);font-size:1.8rem;font-weight:700;color:var(--accent3)">50+</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:.25rem">Bots Deployed</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">
+          <div style="font-family:var(--font-brand);font-size:1.8rem;font-weight:700;color:var(--accent2)">6+</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:.25rem">Years Experience</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">
+          <div style="font-family:var(--font-brand);font-size:1.8rem;font-weight:700;color:#f59e0b">98%</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:.25rem">Client Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════ -->
+<section id="testimonials" style="background:var(--surface)">
+  <div class="section-header reveal center">
+    <div class="section-eyebrow">⭐ Client Feedback</div>
+    <h2 class="section-title">What Our Clients <span class="grad">Say</span></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">The WhatsApp bot handles 90% of our customer queries automatically. Our team now focuses on relationship building. Absolutely game-changing for our business.</p>
+      <div class="testi-author">
+        <div class="tav" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000">RA</div>
+        <div><div class="tan">Rahul Agarwal</div><div class="tar">CEO, RetailHub India</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Our mobile app was delivered in under 4 weeks using their template system. Customised everything, launched on both stores. Incredible speed and quality.</p>
+      <div class="testi-author">
+        <div class="tav" style="background:linear-gradient(135deg,var(--accent2),#7c3aed);color:#fff">SK</div>
+        <div><div class="tan">Sara Khan</div><div class="tar">Founder, QuickBite</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Their HR automation system saves us 35 hours every single week. ROI was obvious in the first month. Professional, responsive and technically brilliant.</p>
+      <div class="testi-author">
+        <div class="tav" style="background:linear-gradient(135deg,var(--accent4),#ff9800);color:#fff">PM</div>
+        <div><div class="tan">Priya Mehta</div><div class="tar">HR Director, TechCorp Solutions</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════ -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">📬 Get in Touch</div>
+    <h2 class="section-title">Ready to Build<br/><span class="grad">Something Great?</span></h2>
+    <p class="section-sub">Tell us about your project and we'll reply within hours — usually much faster.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="reveal-left">
+      <p style="color:var(--muted);line-height:1.85;font-size:.97rem;margin-bottom:.25rem">Most clients prefer a quick WhatsApp message — we respond within minutes. Choose the fastest option for you:</p>
+      <div class="cm-list">
+        <a href="https://wa.me/919876543210?text=Hi%20Solution_Tech.AI!%20I%20need%20help%20with%20a%20project." class="cm-link" target="_blank" rel="noopener">
+          <div class="cm-icon-wrap cm-wa">💬</div>
+          <div><div class="cm-label">WhatsApp (Fastest)</div><div class="cm-value">+91 98765 43210</div></div>
+          <span style="margin-left:auto;color:var(--accent3);font-size:.78rem;font-weight:600">● Online</span>
+        </a>
+        <a href="tel:+919876543210" class="cm-link">
+          <div class="cm-icon-wrap cm-call">📞</div>
+          <div><div class="cm-label">Direct Call</div><div class="cm-value">+91 98765 43210</div></div>
+        </a>
+        <a href="mailto:hello@solutiontech.ai" class="cm-link">
+          <div class="cm-icon-wrap cm-mail">📧</div>
+          <div><div class="cm-label">Email</div><div class="cm-value">hello@solutiontech.ai</div></div>
+        </a>
+      </div>
+      <!-- Trust badges -->
+      <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem">
+        <span class="chip chip-green">✅ Free Consultation</span>
+        <span class="chip chip-accent">⚡ 48hr Response</span>
+        <span class="chip chip-purple">🔒 NDA Available</span>
+        <span class="chip">🌍 Remote Worldwide</span>
+      </div>
+    </div>
+
+    <div class="cform reveal-right">
+      <h4>Send a Message</h4>
+      <form method="POST" action="{% url 'home' %}#contact" novalidate>
+        {% csrf_token %}
+        <div class="form-row2">
+          <div class="fg">
+            <label>First Name *</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<div class="form-errors">{{ form.first_name.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="fg">
+            <label>Last Name *</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}<div class="form-errors">{{ form.last_name.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+        <div class="fg">
+          <label>Email *</label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="form-errors">{{ form.email.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="fg">
+          <label>Phone / WhatsApp</label>
+          {{ form.phone }}
+        </div>
+        <div class="fg">
+          <label>Service Interested In</label>
+          {{ form.service }}
+        </div>
+        <div class="fg">
+          <label>Tell Us About Your Project *</label>
+          {{ form.message }}
+          {% if form.message.errors %}<div class="form-errors">{{ form.message.errors.0 }}</div>{% endif %}
+        </div>
+        <button type="submit" class="form-sub">🚀 Send Message</button>
+        <p class="form-note">🔒 Your information is private and never shared. We reply within 2–4 hours.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── TYPED HEADLINE ── */
+const lines = ['Automate Everything.','Build Faster.','Scale Smarter.','Deploy with AI.'];
+let li=0,ci=0,deleting=false;
+const el=document.getElementById('typedLine');
+function type(){
+  const cur=lines[li];
+  if(!deleting){
+    el.textContent=cur.slice(0,ci+1);ci++;
+    if(ci===cur.length){deleting=true;setTimeout(type,1800);return;}
+  } else {
+    el.textContent=cur.slice(0,ci-1);ci--;
+    if(ci===0){deleting=false;li=(li+1)%lines.length;}
+  }
+  setTimeout(type,deleting?55:95);
+}
+setTimeout(type,1200);
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el){
+  const target=+el.dataset.count;
+  let current=0;
+  const step=Math.ceil(target/60);
+  const timer=setInterval(()=>{
+    current=Math.min(current+step,target);
+    el.textContent=current+(el.dataset.count==='98'?'':'+'|| '');
+    if(current>=target)clearInterval(timer);
+  },30);
+}
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){animateCounter(e.target);counterObs.unobserve(e.target);}
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>counterObs.observe(el));
+</script>
+{% endblock %}
