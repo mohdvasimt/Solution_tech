@@ -38,9 +38,9 @@ Open: http://127.0.0.1:8000
 ## ✏️ Customise Your Brand
 1. Open `core/templates/core/base.html`
 2. Replace `Solution_Tech.AI` with your brand name
-3. Update phone: `+91 98765 43210`
+3. Update phone: `+91 99976 03233`
 4. Update email: `hello@solutiontech.ai`
-5. Update WhatsApp link: `https://wa.me/91XXXXXXXXXX`
+5. Update WhatsApp link: `https://wa.me/919997603233`
 
 ## 🎨 Features
 - ⚡ Animated hero with typing effect & counter animations
